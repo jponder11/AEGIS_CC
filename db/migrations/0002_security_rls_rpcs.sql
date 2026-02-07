@@ -1307,6 +1307,13 @@ for select
 to authenticated
 using (true);
 
+drop policy if exists profiles_self_insert on public.profiles;
+create policy profiles_self_insert
+on public.profiles
+for insert
+to authenticated
+with check (id = auth.uid());
+
 -- Optional self-update policy (commented out by default)
 -- drop policy if exists "profiles_self_update" on public.profiles;
 -- create policy "profiles_self_update"
