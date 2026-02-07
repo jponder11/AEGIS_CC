@@ -1,0 +1,12 @@
+---
+description: AEGIS_CC project structure and guardrails
+alwaysApply: true
+---
+# AEGIS_CC Conventions
+
+- Preserve the top-level layout: `docs/`, `db/`, `core/`, `ui/`, `README.md`.
+- Keep domain documentation in `docs/domain/` and operational rules in `docs/rules/`.
+- Store database migrations in `db/migrations/` and seed data in `db/seed/`.
+- Place backend/service logic under `core/`; each project lives in `core/projects/<project>/`.
+- Place frontend/UI work under `ui/`; each project lives in `ui/projects/<project>/`.
+- Avoid adding new top-level folders without updating `README.md` and this rule.
