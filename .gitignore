@@ -1,0 +1,15 @@
+# =========================
+# Cursor / Editor Artifacts
+# =========================
+
+.cursor/rules/*.mdc
+.cursor/projects/**
+.cursor/tmp/**
+.cursor/cache/**
+
+# Local helper scripts
+tmp_commit.sh
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
