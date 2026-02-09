@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 
 type PrStatus =
@@ -31,9 +31,9 @@ type PrBoardRow = {
 export default function PrBoardPage() {
   const supabase = useMemo(() => createClient(), []);
   const router = useRouter();
+  const params = useParams<{ projectId: string }>();
 
-  // In your app, you may already have projectId from route params or global state
-  const projectId = ""; // <-- replace with your real source (params, store, etc.)
+  const projectId = params?.projectId ?? "";
 
   const [rows, setRows] = useState<PrBoardRow[]>([]);
   const [loading, setLoading] = useState(true);
@@ -41,11 +41,13 @@ export default function PrBoardPage() {
   const [err, setErr] = useState<string | null>(null);
 
   async function load() {
+    if (!projectId) return;
+
     setLoading(true);
     setErr(null);
 
     const { data, error } = await supabase.rpc("rpc_pr_board", {
-      p_project_id: projectId || null,
+      p_project_id: projectId,
     });
 
     if (error) {
@@ -59,7 +61,6 @@ export default function PrBoardPage() {
   }
 
   useEffect(() => {
-    if (!projectId) return;
     load();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [projectId]);
@@ -79,8 +80,7 @@ export default function PrBoardPage() {
     if (error) return setErr(error.message);
 
     const prIdValue = prId as string;
-    // Route to a PR detail page (recommended) or open a modal editor
-    router.push(`/purchasing/pr/${prIdValue}`);
+    router.push(`/projects/${projectId}/purchasing/pr/${prIdValue}`);
   }
 
   async function submit(prId: string) {
@@ -115,7 +115,7 @@ export default function PrBoardPage() {
   }
 
   function goToDetail(prId: string) {
-    router.push(`/purchasing/pr/${prId}`);
+    router.push(`/projects/${projectId}/purchasing/pr/${prId}`);
   }
 
   return (
